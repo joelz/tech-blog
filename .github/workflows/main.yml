@@ -30,5 +30,6 @@ jobs:
         # below accordingly.
         if: github.ref == 'refs/heads/main'
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.personal_token }} # 填写你自己的 personal_token
+          PUBLISH_BRANCH: gh-pages  # 推送到当前 gh-pages 分支
           publish_dir: ./public
