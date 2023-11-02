@@ -1,4 +1,4 @@
-baseURL: http://example.org/
+baseURL: https://joelz.github.io/tech-blog/
 DefaultContentLanguage: en
 languageCode: en-us
 title: A Hugo Site
