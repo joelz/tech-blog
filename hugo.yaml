@@ -1,8 +1,8 @@
 baseURL: https://joelz.github.io/tech-blog/
 DefaultContentLanguage: en
 languageCode: en-us
-title: A Hugo Site
-copyright: This is a customized copyright.
+title: Notes by Joel
+copyright: Copy, right? 🤔
 theme: diary
 markup:
   highlight:
@@ -10,15 +10,15 @@ markup:
     guessSyntax: false
     hl_Lines: ""
     lineNoStart: 1
-    lineNos: false
+    lineNos: true
     lineNumbersInTable: true
     noClasses: true
-    style: perldoc
+    style: doom-one
     tabWidth: 4
 params:
-  subtitle: Themed by Diary.
+  subtitle: Bytes and Bits, Piece by Piece.
   enableGitalk: false
-  enableGiscus: true
+  enableGiscus: false
   clarity: abcdefghzd
   enableOpenGraph: true
   enableTwitterCards: true
