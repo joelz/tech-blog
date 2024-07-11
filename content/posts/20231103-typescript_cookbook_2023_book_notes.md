@@ -4,7 +4,7 @@ date: 2023-11-03T12:01:58+08:00
 description: "类型体操练起来"
 tags: [book, typescript]
 featured_image: "/tech-blog/images/notebook.jpg"
-categories: bool
+categories: book
 comment : false
 ---
 
