@@ -1,0 +1,76 @@
+<!doctype html><html><head><title>支付宝小程序导航栏自定义方案</title>
+<meta charset=utf-8><meta name=X-UA-Compatible content="IE=edge"><meta name=google-site-verification content><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" name=viewport><meta content="telephone=no" name=format-detection><meta name=description content="支付宝小程序导航栏自定义"><meta name=renderer content="webkit"><meta name=theme-color content="#ffffff"><meta property="og:url" content="https://joelz.github.io/tech-blog/posts/20230720-mp_alipay_navigation-bar/"><meta property="og:site_name" content="Notes by Joel"><meta property="og:title" content="支付宝小程序导航栏自定义方案"><meta property="og:description" content="支付宝小程序导航栏自定义"><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-07-20T12:01:58+08:00"><meta property="article:modified_time" content="2023-07-20T12:01:58+08:00"><meta property="article:tag" content="Mp-Alipay"><meta property="article:tag" content="Uni-App"><meta name=twitter:card content="summary"><meta name=twitter:title content="支付宝小程序导航栏自定义方案"><meta name=twitter:description content="支付宝小程序导航栏自定义"><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","abcdefghzd")</script><script src=/tech-blog/js/toc.js></script><link type=text/css rel=stylesheet href=/tech-blog/vendor/css/bootstrap.min.css><link rel=stylesheet href=/tech-blog/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media=screen><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Material+Icons"></head><body><div id=app><div class=single-column-drawer-container id=drawer v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }"><div class=drawer-content><div class=drawer-menu><a class="a-block drawer-menu-item active" href=/tech-blog/posts>Archive
+</a><a class="a-block drawer-menu-item false" href=/tech-blog/categories>Categories
+</a><a class="a-block drawer-menu-item false" href=/tech-blog/tags>Tags
+</a><a class="a-block drawer-menu-item false" href=/tech-blog/index.xml>RSS Feed</a><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#%e5%85%88%e7%9c%8b%e6%94%af%e4%bb%98%e5%ae%9d%e5%b0%8f%e7%a8%8b%e5%ba%8f%e6%96%87%e6%a1%a3%e6%80%8e%e4%b9%88%e8%af%b4 class=nav-先看支付宝小程序文档怎么说>先看支付宝小程序文档怎么说</a></li><ul><li><a href=#%e5%af%bc%e8%88%aa%e6%a0%8f%e8%83%8c%e6%99%af%e8%89%b2 class=nav-导航栏背景色>导航栏背景色</a></li><li><a href=#%e5%af%bc%e8%88%aa%e6%a0%8f%e5%89%8d%e6%99%af%e8%89%b2%e7%8a%b6%e6%80%81%e6%a0%8f%e6%96%87%e5%ad%97%e6%8c%89%e9%92%ae%e4%bb%a5%e5%8f%8a%e6%a0%87%e9%a2%98%e7%9a%84%e9%a2%9c%e8%89%b2 class=nav-导航栏前景色状态栏文字按钮以及标题的颜色>导航栏前景色（状态栏文字、按钮、以及标题的颜色）</a></li></ul><li><a href=#%e4%b8%a4%e7%a7%8d%e6%96%b9%e6%a1%88 class=nav-两种方案>两种方案</a></li><ul><li><a href=#%e6%96%b9%e6%a1%881-title-%e7%94%a8%e6%94%af%e4%bb%98%e5%ae%9d%e5%8e%9f%e7%94%9f%e7%9a%84 class=nav-方案1-title-用支付宝原生的>方案1: title 用支付宝原生的</a></li><ul><li><a href=#%e8%83%8c%e6%99%af%e8%89%b2%e4%b8%8d%e9%80%8f%e6%98%8e class=nav-背景色不透明>背景色不透明</a></li><li><a href=#%e8%83%8c%e6%99%af%e8%89%b2%e9%80%8f%e6%98%8e class=nav-背景色透明>背景色透明</a></li></ul><li><a href=#%e6%96%b9%e6%a1%882-title-%e8%ae%be%e7%bd%ae%e4%b8%ba%e7%a9%ba%e9%a1%b5%e9%9d%a2%e8%87%aa%e5%b7%b1%e6%b8%b2%e6%9f%93-title class=nav-方案2-title-设置为空页面自己渲染-title>方案2: title 设置为空，页面自己渲染 title</a></li></ul><li><a href=#%e5%ae%98%e6%96%b9%e6%96%87%e6%a1%a3 class=nav-官方文档>官方文档</a></li></ul></div></div></div></div></div><transition name=fade><div id=drawer-mask v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if=isDrawerOpen v-on:click=toggleDrawer></div></transition><nav id=navBar class="navbar sticky-top navbar-light single-column-nav-container"><div id=navBackground class=nav-background></div><div class="container container-narrow nav-content"><button id=nav_dropdown_btn class=nav-dropdown-toggle type=button v-on:click=toggleDrawer>
+<i class=material-icons>menu
+</i></button>
+<a id=navTitle class=navbar-brand href=https://joelz.github.io/tech-blog/>Notes by Joel
+</a><button type=button class=nav-darkmode-toggle id=darkModeToggleButton2>
+<i class=material-icons id=darkModeToggleIcon2>dark_mode</i></button></div></nav><div class=single-column-header-container id=pageHead v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }"><a href=https://joelz.github.io/tech-blog/><div class=single-column-header-title>Notes by Joel</div><div class=single-column-header-subtitle>Bytes and Bits, Piece by Piece.</div></a></div><div id=content><div id=streamContainer class=stream-container><div class="post-list-container post-list-container-shadow"><div class=post><div class=post-head-wrapper style=background-image:url(https://joelz.github.io/tech-blog/images/notebook.jpg)><div class=post-title>支付宝小程序导航栏自定义方案<div class=post-subtitle>支付宝小程序导航栏自定义</div><div class=post-meta><time itemprop=datePublished>2023-07-20 12:01
+</time><i class=material-icons>folder</i>
+<a href=/categories/mp-alipay>mp-alipay</a>
+&nbsp;
+<i class=material-icons>label</i>
+<a href=/tags/mp-alipay>mp-alipay</a>
+&nbsp;
+<a href=/tags/uni-app>uni-app</a>
+&nbsp;</div></div></div><div class=post-body-wrapper><div class=post-body v-pre><h2 id=先看支付宝小程序文档怎么说>先看支付宝小程序文档怎么说</h2><h3 id=导航栏背景色>导航栏背景色</h3><pre tabindex=0><code>// 若在 app.json 中的 window 中配置，则对全局页面生效
+&#34;window&#34;: {
+  &#34;titleBarColor&#34;: &#34;#FFFFFF&#34;
+},
+
+// 若在 page.json 中配置，则对当前页面生效
+{
+  &#34;titleBarColor&#34;: &#34;#FFFFFF&#34;
+}
+
+// 也可以使用 my.setNavigationBar() 设置当前页面的导航栏的背景色
+my.setNavigationBar({
+    backgroundColor: &#34;#FFFFFF&#34;
+})
+</code></pre><h3 id=导航栏前景色状态栏文字按钮以及标题的颜色>导航栏前景色（状态栏文字、按钮、以及标题的颜色）</h3><pre tabindex=0><code>// frontColor必须和backgroundColor一起设置才能生效；
+// 导航栏背景色会影响导航栏前景色。 若只设置导航栏背景色，则当背景色为 #ffffff时，前景色为黑色，否则前景色为白色。
+my.setNavigationBar({
+    frontColor: &#39;#ffffff&#39;,
+    backgroundColor: &#39;#000000&#39;
+})
+</code></pre><p><a href="https://opendocs.alipay.com/mini/007l6m?pathHash=3b919f4b">https://opendocs.alipay.com/mini/007l6m?pathHash=3b919f4b</a>:</p><blockquote><p>字体颜色、返回按钮颜色属于导航栏前景色。前景色仅支持 #ffffff 和 #000000。
+可以通过 my.setNavigationBar 入参 frontColor 直接修改导航栏前景色（基础库 2.7.24 开始支持）
+也可通过 <code>my.setNavigationBar</code> 入参 <code>backgroundColor</code> 间接影响导航栏前景色。即当 <code>backgroundColor</code> 为白色时，前景色为黑色；当 <code>backgroundColor</code> 为其他颜色时，前景色为白色。</p></blockquote><h2 id=两种方案>两种方案</h2><h3 id=方案1-title-用支付宝原生的>方案1: title 用支付宝原生的</h3><h4 id=背景色不透明>背景色不透明</h4><p>默认就好。</p><h4 id=背景色透明>背景色透明</h4><p>uniapp 的 pages.json 中设置：</p><pre tabindex=0><code>{
+  &#34;path&#34;: &#34;color&#34;,
+  &#34;style&#34;: {
+    &#34;navigationBarTitleText&#34;: &#34;色彩&#34;,
+    &#34;enablePullDownRefresh&#34;: false,
+    &#34;navigationStyle&#34;: &#34;custom&#34;,
+    &#34;navigationBarBackgroundColor&#34;: &#34;#ffffff&#34;,
+    &#34;mp-alipay&#34;: {
+      &#34;transparentTitle&#34;: &#34;auto&#34;,
+      &#34;titlePenetrate&#34;: &#34;YES&#34;,
+      &#34;defaultTitle&#34;: &#34;色彩2&#34;
+    }
+  }
+},
+</code></pre><p>注意</p><ol><li>设置了 <code>"transparentTitle": "always",</code> 或者<code> "transparentTitle": "auto",</code> ，要自己处理页面的 padding：
+<img src=/tech-blog/images/20230720-mp_alipay_navigation-bar.assets/image-20230720114248859.png alt=image-20230720114248859></li><li>前景色受背景色影响，非<code>#ffffff</code>背景色前景色会变成白色，所以如果背景色设置为类似白色的颜色，title 就不可辨认了。</li></ol><h3 id=方案2-title-设置为空页面自己渲染-title>方案2: title 设置为空，页面自己渲染 title</h3><p>uniapp 的 pages.json 中设置<code>defaultTitle</code>为空：</p><pre tabindex=0><code>{
+  &#34;path&#34;: &#34;color&#34;,
+  &#34;style&#34;: {
+    &#34;navigationBarTitleText&#34;: &#34;色彩&#34;,
+    &#34;enablePullDownRefresh&#34;: false,
+    &#34;navigationStyle&#34;: &#34;custom&#34;,
+    &#34;navigationBarBackgroundColor&#34;: &#34;#ffffff&#34;,
+    &#34;mp-alipay&#34;: {
+      &#34;transparentTitle&#34;: &#34;always&#34;,
+      &#34;titlePenetrate&#34;: &#34;YES&#34;,
+      &#34;defaultTitle&#34;: &#34;&#34;
+    }
+  }
+},
+</code></pre><p>然后自己写代码渲染 title。</p><h2 id=官方文档>官方文档</h2><ol><li><a href="https://opendocs.alipay.com/mini/07535r?pathHash=a54e002c">导航栏使用须知 - 支付宝文档中心</a></li><li><a href="https://opendocs.alipay.com/mini/077mhs?pathHash=82b5f57f">导航栏行为升级开发者适配指南 - 支付宝文档中心</a></li><li><a href="https://opendocs.alipay.com/mini/007l6m?pathHash=3b919f4b">导航栏 FAQ - 支付宝文档中心</a></li></ol><hr width=100% id=EOF><p style=color:#777>Last modified on 2023-07-20</p></div></div><nav class=post-pagination><a class=newer-posts href=/tech-blog/posts/20230815-android_app_links/>Next<br>短信链接拉起 app 方案
+</a><a class=older-posts href=/tech-blog/posts/20220429-iconfont/>Previous<br>Iconfont使用笔记</a></nav><div class=post-comment-wrapper><p style=opacity:.6 align=center><small>Comments Disabled.</small></p></div></div></div></div></div><div id=sideContainer class=side-container><a class="a-block nav-head false" href=https://joelz.github.io/tech-blog/><div class=nav-title>Notes by Joel</div><div class=nav-subtitle>Bytes and Bits, Piece by Piece.</div></a><div class=nav-link-list><a class="a-block nav-link-item active" href=/tech-blog/posts>Archive
+</a><a class="a-block nav-link-item false" href=/tech-blog/categories>Categories
+</a><a class="a-block nav-link-item false" href=/tech-blog/tags>Tags
+</a><a class="a-block nav-link-item false" href=/tech-blog/index.xml>RSS Feed</a></div><div class=nav-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+Copy, right? 🤔</div></div><div id=extraContainer class=extra-container><div class=toc-wrapper><div class=toc><div class=toc-content><center>- CATALOG -</center><ul><ul><li><a href=#%e5%85%88%e7%9c%8b%e6%94%af%e4%bb%98%e5%ae%9d%e5%b0%8f%e7%a8%8b%e5%ba%8f%e6%96%87%e6%a1%a3%e6%80%8e%e4%b9%88%e8%af%b4 class=nav-先看支付宝小程序文档怎么说>先看支付宝小程序文档怎么说</a></li><ul><li><a href=#%e5%af%bc%e8%88%aa%e6%a0%8f%e8%83%8c%e6%99%af%e8%89%b2 class=nav-导航栏背景色>导航栏背景色</a></li><li><a href=#%e5%af%bc%e8%88%aa%e6%a0%8f%e5%89%8d%e6%99%af%e8%89%b2%e7%8a%b6%e6%80%81%e6%a0%8f%e6%96%87%e5%ad%97%e6%8c%89%e9%92%ae%e4%bb%a5%e5%8f%8a%e6%a0%87%e9%a2%98%e7%9a%84%e9%a2%9c%e8%89%b2 class=nav-导航栏前景色状态栏文字按钮以及标题的颜色>导航栏前景色（状态栏文字、按钮、以及标题的颜色）</a></li></ul><li><a href=#%e4%b8%a4%e7%a7%8d%e6%96%b9%e6%a1%88 class=nav-两种方案>两种方案</a></li><ul><li><a href=#%e6%96%b9%e6%a1%881-title-%e7%94%a8%e6%94%af%e4%bb%98%e5%ae%9d%e5%8e%9f%e7%94%9f%e7%9a%84 class=nav-方案1-title-用支付宝原生的>方案1: title 用支付宝原生的</a></li><ul><li><a href=#%e8%83%8c%e6%99%af%e8%89%b2%e4%b8%8d%e9%80%8f%e6%98%8e class=nav-背景色不透明>背景色不透明</a></li><li><a href=#%e8%83%8c%e6%99%af%e8%89%b2%e9%80%8f%e6%98%8e class=nav-背景色透明>背景色透明</a></li></ul><li><a href=#%e6%96%b9%e6%a1%882-title-%e8%ae%be%e7%bd%ae%e4%b8%ba%e7%a9%ba%e9%a1%b5%e9%9d%a2%e8%87%aa%e5%b7%b1%e6%b8%b2%e6%9f%93-title class=nav-方案2-title-设置为空页面自己渲染-title>方案2: title 设置为空，页面自己渲染 title</a></li></ul><li><a href=#%e5%ae%98%e6%96%b9%e6%96%87%e6%a1%a3 class=nav-官方文档>官方文档</a></li></ul></div></div></div><div class=pagination><a id=globalBackToTop class="pagination-action animated-visibility" href=#top :class="{ invisible: scrollY == 0 }"><i class="material-icons pagination-action-icon">keyboard_arrow_up
+</i></a><a type=button class=pagination-action id=darkModeToggleButton><span class="material-icons pagination-action-icon" id=darkModeToggleIcon>dark_mode</span></a></div></div><div id=single-column-footer>Hugo Theme <a href=https://github.com/amazingrise/hugo-theme-diary>Diary</a> by <a href=https://risehere.net/>Rise</a><br>Ported from <a href=https://mak1t0.cc/ target=_blank rel="noreferrer noopener">Makito</a>'s <a href=https://github.com/SumiMakito/hexo-theme-journal/ target=_blank rel="noreferrer noopener">Journal.</a><br><br>&copy;
+Copy, right? 🤔</div></div><script src=/tech-blog/js/journal.js></script></body></html>

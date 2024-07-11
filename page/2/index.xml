@@ -1,0 +1,135 @@
+<?xml-stylesheet href="/rss.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Notes by Joel</title><link>https://joelz.github.io/tech-blog/</link><description>Recent content on Notes by Joel</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>Copy, right? 🤔</copyright><lastBuildDate>Fri, 03 Nov 2023 12:01:58 +0800</lastBuildDate><atom:link href="https://joelz.github.io/tech-blog/index.xml" rel="self" type="application/rss+xml"/><item><title>微信小程序持续集成相关</title><link>https://joelz.github.io/tech-blog/posts/20210715-miniprogram_ci/</link><pubDate>Thu, 15 Jul 2021 12:01:58 +0800</pubDate><guid>https://joelz.github.io/tech-blog/posts/20210715-miniprogram_ci/</guid><description>Notes by Joel https://joelz.github.io/tech-blog/posts/20210715-miniprogram_ci/ -&lt;h2 id="预览和上传的区别">预览和上传的区别&lt;/h2>
+&lt;p>微信开发者工具有两个按钮：预览和上传。&lt;/p>
+&lt;p>&lt;a href="https://www.npmjs.com/package/miniprogram-ci">miniprogram-ci&lt;/a> 是从&lt;a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/devtools.html">微信开发者工具&lt;/a>中抽离的关于小程序/小游戏项目代码的编译模块，有 &lt;code>ci.preview&lt;/code>和&lt;code>ci.upload&lt;/code>两个方法。和上两个按钮对应。&lt;/p>
+&lt;p>预览时，只能在小程序助手的开发版列表中看到，在PC Web小程序后台的开发版列表看不到。
+上传时，只能在PC Web小程序后台的开发版列表看到，在小程序助手的开发版列表中看不到。&lt;/p>
+&lt;p>只有在PC Web小程序后台才可进行「选为体验版本」及「提交审核」操作。&lt;/p>
+&lt;p>所以现在的做法是在preview.js中先执行一次&lt;code>ci.preview&lt;/code>，再执行一次&lt;code>ci.upload&lt;/code>。&lt;/p>
+&lt;h3 id="links">links&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/article/doc/000e6606ab4ac0edb4791eb4951013">用__wxConfig.envVersion区分小程序体验版，开发板，正式版 | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/00062c56858b5886efd76ffc55ac00">小程序助手里面的版本查看的开发版不能自动更新啊 | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/00040864e180707313ba0503951400">使用 miniprogram-ci 上传的版本在小程序助手里看不见？ | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/minihome/mixflow/1213999125012856832">微信开发者工具交流专区 | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/0002ae57f98a00288cc9303355b400?_at=1626747445453">可否在小程序助手里提供发布版本的功能? | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/0000662ff9ca982a1f9a166885c000?_at=1626747511355">开发者工具上传后，小程序助手没有该版本显示？ | 微信开放社区&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="一次奇怪的bug">一次奇怪的bug&lt;/h2>
+&lt;p>有一天发现线上的小程序有奇怪的样式问题，同样的代码在我们自己电脑上打包传上去却没有问题。最后发现是jenkins上的pipeline里面使用的miniprogram-ci使用的版本太旧了。se照着package.json来确定的版本号，但是在我们本地，我们用的yarn.lock中的版本。&lt;/p>
+&lt;h2 id="微信小程序强制更新">微信小程序强制更新&lt;/h2>
+&lt;p>从文档可以看出，判断小程序是否有新版本和下载小程序新版本代码都是由微信自行负责，我们的代码无法介入。我们的代码能够做的就是：「如果需要马上应用最新版本，可以使用 &lt;a href="https://developers.weixin.qq.com/miniprogram/dev/api/base/update/wx.getUpdateManager.html">wx.getUpdateManager&lt;/a> API 进行处理。」&lt;/p>
+&lt;p>&lt;code>updateManager.applyUpdate()&lt;/code>会有一次系统提示框，所以我们自己的代码就不需要提示用户了。&lt;/p>
+&lt;h3 id="links-1">links&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://www.cnblogs.com/xyyt/p/10616730.html">微信小程序发布新版本时自动提示用户更新 - 逍遥云天 - 博客园&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.lervor.com/archives/159/">uni-app 小程序更新后强制用户升级 - 瞭月&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/000c2430d30b70251e86f0a0256c09">(3)强制更新 | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/miniprogram/dev/framework/runtime/update-mechanism.html">小程序更新机制 | 微信开放文档&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/minigame/dev/api/base/update/UpdateManager.html">UpdateManager | 微信开放文档&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/search?query=UpdateManager&amp;amp;block=1&amp;amp;blogcategory=0&amp;amp;sort=0&amp;amp;time=0&amp;amp;starttime=&amp;amp;endtime=&amp;amp;type%5Bpage%5D=1&amp;amp;type%5Bblock%5D=1&amp;amp;type%5Btype%5D=1&amp;amp;type%5Bquery%5D=UpdateManager&amp;amp;page=2">https://developers.weixin.qq.com/community/search?query=UpdateManager&amp;amp;block=1&amp;amp;blogcategory=0&amp;amp;sort=0&amp;amp;time=0&amp;amp;starttime=&amp;amp;endtime=&amp;amp;type%5Bpage%5D=1&amp;amp;type%5Bblock%5D=1&amp;amp;type%5Btype%5D=1&amp;amp;type%5Bquery%5D=UpdateManager&amp;amp;page=2&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/00040e393585701cd9ccc390b56c00?highLine=UpdateManager">为什么小程序更新提示只有ios用户有，安卓用户看不到更新提示？ | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/000ce49fbfcba890f4bc98baa5a400?highLine=UpdateManager">这几天小程序的updateManager.onCheckForUpdate 安卓不能用了，苹果好使 | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/0004044445c7d09054bcd55ee5b800?highLine=UpdateManager">版本更新提醒，工具上好用，真机就没反应？ | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/0004a03ae2ca80a66bfcd16e156800?highLine=UpdateManager">updateManager.applyUpdate() 调用强制更新后，本地storage丢失 | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/0002eaddc8caf0e5a21ce74bd51800">小程序版本更新,本地缓存会被清理 | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/000e86ed5f8318d7ce0c1b5f75bc00">开发过程中怎么样可以出发 UpdateManager.applyUpdate() 更新逻辑? | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/000ec2bbe20430ca076c55d5f5b000">UpdateManager 更新，没有提示弹出弹出框，直接就是新版本呀？ | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/000020a4584b3831588a08fb95b800?_at=1637469181959">wx.getUpdateManager是检测代码改动还是检测版本号？ | 微信开放社区&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://developers.weixin.qq.com/community/develop/doc/000684d73407b0e994a96050856400">wx.getUpdateManager是检测代码改动还是检测版本号？ | 微信开放社区&lt;/a>&lt;/li>
+&lt;/ul>
+- https://joelz.github.io/tech-blog/posts/20210715-miniprogram_ci/ - Copy, right? 🤔</description></item><item><title>Capacitor setup in Apple M1 Mac</title><link>https://joelz.github.io/tech-blog/posts/20210504-capacitor_setup_in_apple_m1/</link><pubDate>Tue, 04 May 2021 12:01:58 +0800</pubDate><guid>https://joelz.github.io/tech-blog/posts/20210504-capacitor_setup_in_apple_m1/</guid><description>Notes by Joel https://joelz.github.io/tech-blog/posts/20210504-capacitor_setup_in_apple_m1/ -&lt;h2 id="运行环境">运行环境&lt;/h2>
+&lt;p>macOS Big Sur 11.2.2
+Xcode 12.4
+Android Studio 4.1.3
+node 14.16.1
+Capacitor 2.4.1
+Vue 3.0&lt;/p>
+&lt;h2 id="web">Web&lt;/h2>
+&lt;pre tabindex="0">&lt;code>npm install -g @ionic/cli
+git clone https://github.com/ionic-team/tutorial-photo-gallery-vue.git
+cd photo-gallery-capacitor-vue
+npm install
+ionic serve
+&lt;/code>&lt;/pre>&lt;h2 id="ios">iOS&lt;/h2>
+&lt;h3 id="修改appid">修改appId&lt;/h3>
+&lt;p>git clone下来的代码里面的appId是&lt;code>io.ionic.demo.pg.vue&lt;/code>，要换成自己的。VS Code打开代码文件夹，查找替换该appId为新的appId（比如&lt;code>com.dc1979.capacitor.demo.vue&lt;/code>）&lt;/p>
+&lt;h3 id="安装arm版cocoapod">安装arm版CocoaPod&lt;/h3>
+&lt;p>参考的是这个SO：https://stackoverflow.com/a/66556339&lt;/p>
+&lt;ol>
+&lt;li>确认安装了arm版Homebrew：&lt;code>which brew&lt;/code>返回的结果是 &lt;code>/opt/homebrew/bin/brew&lt;/code>。不是的话就按照这篇文章去安装arm版Homebrew：&lt;a href="https://sspai.com/post/63935">在 M1 芯片 Mac 上使用 Homebrew&lt;/a>&lt;/li>
+&lt;li>安装arm版ruby：&lt;code>brew install ruby&lt;/code>&lt;/li>
+&lt;li>把环境变量加到PATH中：&lt;code>echo 'export PATH=&amp;quot;/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.0.0/bin:$PATH&amp;quot;' &amp;gt;&amp;gt; ~/.zshrc&lt;/code>&lt;/li>
+&lt;li>Execute &lt;code>source ~/.zshrc&lt;/code> or restart your shell&lt;/li>
+&lt;li>确定&lt;code>which ruby&lt;/code>返回的是&lt;code>$(brew --prefix)/opt/ruby/bin/ruby&lt;/code>&lt;/li>
+&lt;li>Install CocoaPods with &lt;code>sudo gem install cocoapods&lt;/code>&lt;/li>
+&lt;li>Make sure you are using the correct pod binary by executing &lt;code>which pod&lt;/code> (should be &lt;code>$(brew --prefix)/lib/ruby/gems/3.0.0/bin/pod&lt;/code>)&lt;/li>
+&lt;li>Make sure ethon is version 0.13.0 or more with &lt;code>gem info ethon&lt;/code>, otherwise run &lt;code>sudo gem install ethon&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;h3 id="安装pod依赖">安装pod依赖&lt;/h3>
+&lt;ol>
+&lt;li>运行&lt;code>cd ios/App/&lt;/code>&lt;/li>
+&lt;li>运行&lt;code>pod install&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;h3 id="在xcode中运行项目">在Xcode中运行项目&lt;/h3>
+&lt;ol>
+&lt;li>在项目根目录下运行&lt;code>ionic cap sync&lt;/code>。可能最后会报错说sh pod install不成功，忽略它即可，因为我们上一步已经执行了pod install&lt;/li>
+&lt;li>&lt;code>ionic cap open ios&lt;/code>&lt;/li>
+&lt;li>在打开的Xcode中，登录自己的Apple ID，选择Automatically manage signing（如果有开发者账号的话，就选对应的profile）&lt;/li>
+&lt;li>运行到模拟器或者真机&lt;/li>
+&lt;/ol>
+&lt;h3 id="live-reload">live reload&lt;/h3>
+&lt;ol>
+&lt;li>在项目根目录下运行&lt;code>ionic cap run ios -l --external&lt;/code>&lt;/li>
+&lt;li>到Xcode中运行项目到模拟器或者真机&lt;/li>
+&lt;/ol>
+&lt;h3 id="使用safari-web-inspector来调试ios手机上的app">使用Safari Web Inspector来调试iOS手机上的app&lt;/h3>
+&lt;p>因为Capacitor app本质上就是一个WebView，所以可以用Safari Web Inspector来调试Capacitor app里面的代码。&lt;/p>
+&lt;ol>
+&lt;li>在iPhone或者iPad上 启用「网页检查器」：进入 设置 &amp;gt; Safari 浏览器&amp;gt; 高级 中，启用「网页检查器」&lt;/li>
+&lt;li>在mac电脑上，打开Safari，在 Safari &amp;gt; Preferences &amp;gt; Advanced 中，勾选 Show Develop menu in menu bar。重启Safari。&lt;/li>
+&lt;li>将iPhone或者iPad连接到mac电脑上，运行Capacitor app，在Safari的 Develop &amp;gt; [你的iOS设备名称]下面，点击需要调试的页面（一般就是localhost - xxx），打开Web Inspector。&lt;/li>
+&lt;/ol>
+&lt;h2 id="android">Android&lt;/h2>
+&lt;h3 id="安装android-sdk">安装android sdk&lt;/h3>
+&lt;p>安装Android Studio，打开它，安装android sdk（需要先配置代理翻墙）&lt;/p>
+&lt;h3 id="在android-studio中运行项目">在Android Studio中运行项目&lt;/h3>
+&lt;ol>
+&lt;li>因为在iOS部分我们已经运行过&lt;code>ionic cap sync&lt;/code>，所以android project其实已经准备好了&lt;/li>
+&lt;li>&lt;code>ionic cap open android&lt;/code>&lt;/li>
+&lt;li>在打开的Android Studio中，运行项目到真机（模拟器暂时在M1上还不行，只有preview版本）&lt;/li>
+&lt;/ol>
+&lt;h3 id="live-reload-ios-live-reload没运行">live reload (iOS live reload没运行)&lt;/h3>
+&lt;ol>
+&lt;li>在项目根目录下运行&lt;code>ionic cap run android -l --external&lt;/code>&lt;/li>
+&lt;li>到Android Studio中运行项目到真机&lt;/li>
+&lt;/ol>
+&lt;h3 id="live-reload-ios-live-reload已运行">live reload (iOS live reload已运行)&lt;/h3>
+&lt;ol>
+&lt;li>新开一个terminal窗口&lt;/li>
+&lt;li>在项目根目录下运行&lt;code>npx cap copy android&amp;amp;&amp;amp;npx cap open android&lt;/code>&lt;/li>
+&lt;li>到Android Studio中运行项目到真机&lt;/li>
+&lt;/ol>
+&lt;h3 id="使用chrome-devtools来调试android手机上的app">使用Chrome DevTools来调试Android手机上的app&lt;/h3>
+&lt;p>因为Capacitor app本质上就是一个WebView，所以可以用Chrome DevTools来调试Capacitor app里面的代码。&lt;/p>
+&lt;ol>
+&lt;li>在Android手机上的开发者选项中启用USB调试&lt;/li>
+&lt;li>打开Chrome，在地址栏中输入&lt;code>chrome://inspect#devices&lt;/code>，回车&lt;/li>
+&lt;li>在Chrome Devices页面上查看Discover USB devices是否已经勾选，没有的话勾选上&lt;/li>
+&lt;li>将Anroid手机连接到电脑，Android手机上会询问「是否允许USB调试」，选择「允许」&lt;/li>
+&lt;li>此时该Android手机应该会出现在Chrome Devices页面上，点击对应页面下面的「inspect」链接，就可以看见和Web开发时一样的DevTools页面了&lt;/li>
+&lt;/ol>
+&lt;p>更多信息可以参考Chrome官方的文档：&lt;a href="https://developer.chrome.com/docs/devtools/remote-debugging/">Remote debug Android devices - Chrome Developers&lt;/a>&lt;/p>
+&lt;h3 id="使用intellij-idea-ce-">使用IntelliJ IDEA CE ?&lt;/h3>
+&lt;p>因为Android Studio暂时还不支持Apple M1（20210504），网上有人建议用IntelliJ IDEA CE来编辑和运行android项目，暂时还没测试。
+安装IntelliJ IDEA CE后，第一件事情也是配置代理翻墙。&lt;/p>
+&lt;h2 id="真实的capacitor项目在apple-m1上可以正常build吗">真实的Capacitor项目在Apple M1上可以正常build吗&lt;/h2>
+&lt;p>测试了Clubhouse App，可以。&lt;/p>
+&lt;h2 id="links">links&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.jianshu.com/p/ef16b3bec42b">M1芯片Mac搭建前端开发环境 - 简书&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/345284558">Apple Silicon 移动端开发填坑记录（持续更新） - 知乎&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://stackoverflow.com/questions/16904658/node-version-manager-install-nvm-command-not-found">node.js - Node Version Manager install - nvm command not found - Stack Overflow&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.jetbrains.com/help/idea/create-your-first-android-application.html#Android-make-application-interactive">Tutorial: Create your first Android application | IntelliJ IDEA&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://medium.com/mobile-app-development-publication/speed-up-android-compilation-in-apple-m1-device-6dbca65b4bb9">Speed up Android Compilation in Apple M1 Device | by Elye | Mobile App Development Publication | Apr, 2021 | Medium&lt;/a>&lt;/li>
+&lt;/ul>
+- https://joelz.github.io/tech-blog/posts/20210504-capacitor_setup_in_apple_m1/ - Copy, right? 🤔</description></item></channel></rss>
